@@ -1,0 +1,5 @@
+create,c,dm_document
+set,c,l,object_name
+Testing API Ant task
+save,c,l
+dump,c,l
