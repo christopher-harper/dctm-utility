@@ -17,9 +17,8 @@ import com.documentum.fc.common.IDfTime;
 import fi.sardion.dctm.deploy.persistent.Persistent;
 import fi.sardion.dctm.deploy.util.DCTMTask;
 
-/** This is an ant task for creating and updating a dm_job object. The job task
- * is nested in the {@link fi.sardion.dctm.deploy.session.Session session} and {@link fi.sardion.dctm.deploy.method.Method servermethod}
- * tasks and must be
+/** This is an ant task for creating and updating a dm_job object. The job task is nested in the
+ * {@link fi.sardion.dctm.deploy.session.Session session} and {@link fi.sardion.dctm.deploy.method.Method servermethod} tasks and must be
  * called <b> <code>job</code></b>.
  * <p>
  * <ul>
@@ -46,24 +45,21 @@ public class Job extends Persistent {
 	 * </ul>
 	 * @since %since% */
 	private boolean			inactivaAfterFailure	= false;
-	/** Name of the job object. <b>NOTE</b>: This uniquely identifies the job in
-	 * the repository.
+	/** Name of the job object. <b>NOTE</b>: This uniquely identifies the job in the repository.
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:14:12</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
 	 * </ul>
 	 * @since %since% */
 	private String			jobName					= null;
-	/** How many times can the job run. Default is zero(0) which means that there
-	 * is not a limit.
+	/** How many times can the job run. Default is zero(0) which means that there is not a limit.
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:15:09</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
 	 * </ul>
 	 * @since %since% */
 	private int				maxIterations			= 0;
-	/** The arguments to be passed to the method. <b>NOTE</b>: The method is
-	 * responsible of reading these values.
+	/** The arguments to be passed to the method. <b>NOTE</b>: The method is responsible of reading these values.
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:16:06</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -84,16 +80,14 @@ public class Job extends Persistent {
 	 * </ul>
 	 * @since %since% */
 	private boolean			passStandardArguments	= true;
-	/** How often to execute the job. Used in conjunction with run mode. Default
-	 * value is one.
+	/** How often to execute the job. Used in conjunction with run mode. Default value is one.
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:39:54</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
 	 * </ul>
 	 * @since %since% */
 	private int				runInterval				= 1;
-	/** How often to execute the job. Used in conjunction with run interval.
-	 * Default value is week (4).
+	/** How often to execute the job. Used in conjunction with run interval. Default value is week (4).
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:40:00</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -161,8 +155,8 @@ public class Job extends Persistent {
 		this.expirationDate = new DfTime(anExpirationDate, IDfTime.DF_TIME_PATTERN18);
 	}
 
-	/** Should the job be inactivated if it fails. <b>NOTE</b>: String value
-	 * passed in is transformed to a boolean using <code>Boolean.parseBoolean(String);</code>
+	/** Should the job be inactivated if it fails. <b>NOTE</b>: String value passed in is transformed to a boolean using
+	 * <code>Boolean.parseBoolean(String);</code>
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:48:22</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -186,8 +180,7 @@ public class Job extends Persistent {
 		this.jobName = aJobname;
 	}
 
-	/** How many times can the job be executed. <b>NOTE</b>: The given value is
-	 * parsed to an int using <code>Integer.parseInt(String);</code>
+	/** How many times can the job be executed. <b>NOTE</b>: The given value is parsed to an int using <code>Integer.parseInt(String);</code>
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:50:43</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -199,8 +192,8 @@ public class Job extends Persistent {
 		this.maxIterations = Integer.parseInt(iterations);
 	}
 
-	/** Set the method arguments. <b>NOTE</b>: This is a comma (,) separated list
-	 * that is turned to a List using <code>Arrays.asList(aMethodArguments.split(","));</code>
+	/** Set the method arguments. <b>NOTE</b>: This is a comma (,) separated list that is turned to a List using
+	 * <code>Arrays.asList(aMethodArguments.split(","));</code>
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:53:09</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -224,8 +217,8 @@ public class Job extends Persistent {
 		this.methodName = aMethodname;
 	}
 
-	/** Pass standard arguments to the method. String value passed in is
-	 * transformed to a boolean using <code>Boolean.parseBoolean(String);</code>
+	/** Pass standard arguments to the method. String value passed in is transformed to a boolean using
+	 * <code>Boolean.parseBoolean(String);</code>
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:55:51</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -237,8 +230,8 @@ public class Job extends Persistent {
 		this.passStandardArguments = Boolean.parseBoolean(aPassStandardArguments);
 	}
 
-	/** Set how often to execute the job. Used in conjunction with run mode.
-	 * <b>NOTE</b>: The given value is parsed to an int using <code>Integer.parseInt(String);</code>
+	/** Set how often to execute the job. Used in conjunction with run mode. <b>NOTE</b>: The given value is parsed to an int using
+	 * <code>Integer.parseInt(String);</code>
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 16:57:26</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
@@ -250,10 +243,9 @@ public class Job extends Persistent {
 		this.runInterval = Integer.parseInt(interval);
 	}
 
-	/** Set how often to execute the job. Used in conjunction with run interval.
-	 * <b>NOTE</b>: The given value is parsed to an int using <code>Integer.parseInt(String);</code> and must meet the following
-	 * conditions. Mode must be >=1 and <=9 or one of the following: minute,
-	 * hour, day, week, month, dayofweek, dayofmonth or dayofyear
+	/** Set how often to execute the job. Used in conjunction with run interval. <b>NOTE</b>: The given value is parsed to an int using
+	 * <code>Integer.parseInt(String);</code> and must meet the following conditions. Mode must be >=1 and <=9 or one of the following:
+	 * minute, hour, day, week, month, dayofweek, dayofmonth or dayofyear
 	 * <ul>
 	 * <li>Created: 18 Sep 2010 17:00:01</li>
 	 * <li>Author: Christopher Harper, account: dmadmin</li>
