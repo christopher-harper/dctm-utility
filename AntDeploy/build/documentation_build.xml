@@ -1,8 +1,7 @@
 <project name="Test custom ANT tasks." default="installoldbuildnumber">
 	<property file="documentation_build.properties" />
 	<!-- Create new jar files for the method and the TBO. -->
-	<target name="installnewbuildnumber" description="Compile the jar files and deploy them."
-		depends="build">
+	<target name="installnewbuildnumber" description="Compile the jar files and deploy them." depends="build">
 		<antcall target="deploy" />
 	</target>
 	<!-- Use the previously compiled jar files for the method and the TBO. -->
@@ -14,9 +13,14 @@
 		<!-- Create a build number. -->
 		<buildnumber />
 		<!-- Compile the classes. -->
-		<javac srcdir="../java" destdir="../classes" debug="true"
-			deprecation="true" verbose="true" optimize="true" target="1.4"
-			includejavaruntime="true">
+		<javac srcdir="../java"
+		       destdir="../classes"
+		       debug="true"
+		       deprecation="true"
+		       verbose="true"
+		       optimize="true"
+		       target="1.4"
+		       includejavaruntime="true">
 			<classpath path="../classes" />
 			<classpath>
 				<fileset dir="../lib">
@@ -59,15 +63,13 @@
 		</manifest>
 		<!-- Create the interface jar. NOTE: the extension zip is used to ease 
 			the checking of the file contents. -->
-		<jar manifest="MANIFEST.MF"
-			destfile="../deploy/docu_ant/docu_ant-interface-${version.number}-b${build.number}.zip">
+		<jar manifest="MANIFEST.MF" destfile="../deploy/docu_ant/docu_ant-interface-${version.number}-b${build.number}.zip">
 			<fileset dir="../classes">
 				<include name="**/IAntDocument.class" />
 			</fileset>
 		</jar>
 		<!-- Create the implementation jar. -->
-		<jar manifest="MANIFEST.MF"
-			destfile="../deploy/docu_ant/docu_ant-implementation-${version.number}-b${build.number}.zip">
+		<jar manifest="MANIFEST.MF" destfile="../deploy/docu_ant/docu_ant-implementation-${version.number}-b${build.number}.zip">
 			<fileset dir="../classes">
 				<include name="**/fi/sardion/dctm/example/tbo/**" />
 				<exclude name="**/IAntDocument.class" />
@@ -95,15 +97,14 @@
 			<attribute name="Implementation-Version" value="${version.number}-b${build.number}" />
 		</manifest>
 		<!-- Create the interface jar. -->
-		<jar manifest="MANIFEST.MF"
-			destfile="../deploy/users_docs_ant/users_docs_ant-interface-${version.number}-b${build.number}.zip">
+		<jar manifest="MANIFEST.MF" destfile="../deploy/users_docs_ant/users_docs_ant-interface-${version.number}-b${build.number}.zip">
 			<fileset dir="../classes">
 				<include name="**/IAntDummy.class" />
 			</fileset>
 		</jar>
 		<!-- Create the implementation jar. -->
 		<jar manifest="MANIFEST.MF"
-			destfile="../deploy/users_docs_ant/users_docs_ant-implementation-${version.number}-b${build.number}.zip">
+		     destfile="../deploy/users_docs_ant/users_docs_ant-implementation-${version.number}-b${build.number}.zip">
 			<fileset dir="../classes">
 				<include name="**/fi/sardion/dctm/example/method/**" />
 				<exclude name="**/IAntDummy.class" />
@@ -115,290 +116,433 @@
 		the properties file. -->
 	<target name="deploy" description="Demo build script.">
 		<!-- Open up a session to the selected repository. -->
-		<session repository="${repository.name}" user="${user.name}"
-			password="${user.password}" domain="${user.domain}">
+		<session repository="${repository.name}" user="${user.name}" password="${user.password}" domain="${user.domain}">
 			<!-- Create an ACL object to be used with the java modules deployed in 
 				this script. -->
-			<acl aclclass="3" aclname="javamodules"
-				description="ACL object applied to the created BOF objects."
-				ownername="dm_dbo" reaplysettings="true" repositories="ts" verbose="true">
+			<acl aclclass="3"
+			     aclname="javamodules"
+			     description="ACL object applied to the created BOF objects."
+			     ownername="dm_dbo"
+			     reaplysettings="true"
+			     repositories="ts"
+			     verbose="true">
 				<!-- An accessor definition with all the possible attribute values. -->
-				<accessor applicationpermit="" extendedpermit="execute_proc,change_state"
-					name="dm_world" permit="4" permittype="0" />
-				<accessor
-					extendedpermit="execute_proc,change_location,change_state,change_permit,change_owner,delete_object"
-					name="dm_owner" permit="7" />
-				<accessor
-					extendedpermit="execute_proc,change_location,change_state,change_permit,change_owner,delete_object"
-					name="${user.name}" permit="7" />
+				<accessor applicationpermit="" extendedpermit="execute_proc,change_state" name="dm_world" permit="4" permittype="0" />
+				<accessor extendedpermit="execute_proc,change_location,change_state,change_permit,change_owner,delete_object"
+				          name="dm_owner"
+				          permit="7" />
+				<accessor extendedpermit="execute_proc,change_location,change_state,change_permit,change_owner,delete_object"
+				          name="${user.name}"
+				          permit="7" />
 			</acl>
-			<!-- Define dm_sysobject type. attributes don't need to be defined here 
-				since the tasks load the from the repository. If however attribute data dictionary 
-				(DD) modifications are required they should be defined inside an typeattributes 
-				tag. -->
+			<!-- Define dm_sysobject type. attributes don't need to be defined here since the tasks load the from the repository. If 
+			     however attribute data dictionary (DD) modifications are required they should be defined inside an typeattributes tag. -->
 			<objecttype altertypedd="true"
-				description="The base type for object types that have security and a location."
-				issystemtype="true" lifecyclestate="1" modifytype="false" name="dm_sysobject"
-				reaplysettings="false" typelabel="System object" verbose="true">
-				<!-- Nest the dm_folder type inside the dm_sysobject just as in the type 
-					hierarchy. Same rules for attributes as for dm_sysobject. -->
+			            description="The base type for object types that have security and a location."
+			            issystemtype="true"
+			            lifecyclestate="1"
+			            modifytype="false"
+			            name="dm_sysobject"
+			            reaplysettings="false"
+			            typelabel="System object"
+			            verbose="true">
+				<!-- Nest the dm_folder type inside the dm_sysobject just as in the type hierarchy. Same rules for attributes as for 
+				     dm_sysobject. -->
 				<objecttype altertypedd="true"
-					description="The base type for object types that have security, location and can contain other items."
-					issystemtype="true" lifecyclestate="1" modifytype="false" name="dm_folder"
-					reaplysettings="false" typelabel="System folder" verbose="true">
+				            description="The base type for object types that have security, location and can contain other items."
+				            issystemtype="true"
+				            lifecyclestate="1"
+				            modifytype="false"
+				            name="dm_folder"
+				            reaplysettings="false"
+				            typelabel="System folder"
+				            verbose="true">
 					<typeattributes>
 						<!-- Example of a DD modification made to a super type attribute. Changes 
 							include a label change and a limitation on the search operations that can 
 							be used. -->
-						<typeattribute name="object_name" attributelabel="Folder name"
-							allowedsearchops="=,begins with" />
+						<typeattribute name="object_name" attributelabel="Folder name" allowedsearchops="=,begins with" />
 					</typeattributes>
-					<!-- Create a custom object type beneath dm_folder which has no new 
-						attributes of it's own. -->
+					<!-- Create a custom object type beneath dm_folder which has no new attributes of it's own. -->
 					<objecttype altertypedd="true"
-						description="Value assistance type supporting nested value assistance structures."
-						issystemtype="false" lifecyclestate="1" modifytype="true"
-						name="valass_folder_ant" reaplysettings="true" repositories="ts"
-						typelabel="Value assistance folder" verbose="true">
+					            description="Value assistance type supporting nested value assistance structures."
+					            issystemtype="false"
+					            lifecyclestate="1"
+					            modifytype="true"
+					            name="valass_folder_ant"
+					            reaplysettings="true"
+					            repositories="ts"
+					            typelabel="Value assistance folder"
+					            verbose="true">
 						<typeattributes>
 							<!-- Change the object_name label to reflect the usage of the attribute. -->
-							<typeattribute name="object_name" attributelabel="Value assistance value" />
+							<typeattribute name="object_name" attributelabel="Value assistance value"  />
 						</typeattributes>
 					</objecttype>
 				</objecttype>
 				<objecttype altertypedd="true"
-					description="The base type for object types that have security, location and content."
-					issystemtype="true" lifecyclestate="3" modifytype="false" name="dm_document"
-					reaplysettings="false" typelabel="System document" verbose="true">
+				            description="The base type for object types that have security, location and content."
+				            issystemtype="true"
+				            lifecyclestate="3"
+				            modifytype="false"
+				            name="dm_document"
+				            reaplysettings="false"
+				            typelabel="System document"
+				            verbose="true">
 					<typeattributes>
-						<typeattribute name="object_name" attributelabel="Document name"
-							isrequired="true" issearchable="true" allowedsearchops="=,begins with" />
+						<typeattribute name="object_name"
+						               attributelabel="Document name"
+						               isrequired="true"
+						               issearchable="true"
+						               allowedsearchops="=,begins with" />
 					</typeattributes>
 					<!-- Create a custom type beneath dm_document with two new attributes. -->
 					<objecttype altertypedd="true"
-						description="The example type for ANT task documentation."
-						issystemtype="false" lifecyclestate="1" modifytype="true" name="docu_ant"
-						reaplysettings="true" repositories="ts" typelabel="Ant document"
-						verbose="true">
+					            description="The example type for ANT task documentation."
+					            issystemtype="false"
+					            lifecyclestate="1"
+					            modifytype="true"
+					            name="docu_ant"
+					            reaplysettings="true"
+					            repositories="ts"
+					            typelabel="Ant document"
+					            verbose="true">
 						<typeattributes>
 							<!-- Modify the super type attribute keywords by changing it's label, 
 								value assistance query and search conditions. NOTE: the attribute has modifiers: 
 								isrequired, isreadonly, ishidden & issearchable which don't modify the default 
 								behaviour of the attribute. The reason for this is just to introduce their 
 								existence. -->
-							<typeattribute name="keywords" attributelabel="Ant keywords"
-								isrequired="false" isreadonly="false" ishidden="false"
-								valueassistancequery="select keyword from dm_dbo.used_keywords order by 1"
-								allowcaching="false" iscomplete="false" issearchable="true"
-								allowedsearchops="=,begins with" />
+							<typeattribute name="keywords"
+							               attributelabel="Ant keywords"
+							               isrequired="false"
+							               isreadonly="false"
+							               ishidden="false"
+							               valueassistancequery="select keyword from dm_dbo.used_keywords order by 1"
+							               allowcaching="false"
+							               iscomplete="false"
+							               issearchable="true"
+							               allowedsearchops="=,begins with" />
 							<!-- The ant_status is a new attribute which will be added to the 
 								created object type with the settings defined below. NOTE: if objecttype.modifytype=true 
 								and this typeattribute tag is removed it is removed from the repository object 
 								type also on the next run of the script. -->
-							<typeattribute name="ant_status" datatype="string"
-								length="32" attributelabel="Status" isrequired="true"
-								isreadonly="false" ishidden="false"
-								valueassistancequery="select object_name from valass_folder_ant where folder('/System/ValAss/Status') order by 1"
-								allowcaching="false" iscomplete="true" issearchable="true"
-								default="WIP" allowedsearchops="=,begins with" />
+							<typeattribute name="ant_status"
+							               datatype="string"
+							               length="32"
+							               attributelabel="Status"
+							               isrequired="true"
+							               isreadonly="false"
+							               ishidden="false"
+							               valueassistancequery="select object_name from valass_folder_ant where folder('/System/ValAss/Status') order by 1"
+							               allowcaching="false"
+							               iscomplete="true"
+							               issearchable="true"
+							               default="WIP"
+							               allowedsearchops="=,begins with" />
 							<!-- The ant_id is a new attribute which will be added to the created 
 								object type with the settings defined below. NOTE: if objecttype.modifytype=true 
 								and this typeattribute tag is removed it is removed from the repository object 
 								type also on the next run of the script. -->
-							<typeattribute name="ant_id" datatype="string"
-								length="32" attributelabel="ID" isrequired="true" isreadonly="false"
-								ishidden="false" issearchable="true" allowedsearchops="=,begins with" />
+							<typeattribute name="ant_id"
+							               datatype="string"
+							               length="32"
+							               attributelabel="ID"
+							               isrequired="true"
+							               isreadonly="false"
+							               ishidden="false"
+							               issearchable="true" 
+							               allowedsearchops="=,begins with" />
 						</typeattributes>
 						<!-- TBO for the new object type which creates a dummy identifier for 
 							each created object. -->
-						<tbo acldomain="dm_dbo" aclname="javamodules" contactinfo="info@sardion.fi"
-							description="A demo TBO for the ANT task documentation object type."
-							interfaces="fi.sardion.dctm.example.tbo.IAntDocument"
-							mindfcversion="6.5" moduledescription="Demo TBO that creates an unique identifier."
-							objectname="docu_ant" ownername="dm_dbo"
-							primaryclass="fi.sardion.dctm.example.tbo.AntDocument"
-							reaplysettings="true" repositories="ts" requiredmoduleinterfaces=""
-							requiredmodulenames="" verbose="true" version="6.5">
+						<tbo acldomain="dm_dbo"
+						     aclname="javamodules"
+						     contactinfo="info@sardion.fi"
+						     description="A demo TBO for the ANT task documentation object type."
+						     interfaces="fi.sardion.dctm.example.tbo.IAntDocument"
+						     mindfcversion="6.5"
+						     moduledescription="Demo TBO that creates an unique identifier."
+						     objectname="docu_ant"
+						     ownername="dm_dbo"
+						     primaryclass="fi.sardion.dctm.example.tbo.AntDocument"
+						     reaplysettings="true"
+						     repositories="ts"
+						     requiredmoduleinterfaces=""
+						     requiredmodulenames=""
+						     verbose="true"
+						     version="6.5">
 							<!-- Add an interface jar to the TBO. -->
-							<bofjar acldomain="dm_dbo" aclname="javamodules"
-								description="docu_ant object type tbo interface jar" jar="../deploy/docu_ant/docu_ant-interface.zip"
-								jartype="interface" objectname="docu_ant-interface" ownername="dm_dbo"
-								reaplysettings="true" repositories="ts" verbose="true" />
+							<bofjar acldomain="dm_dbo"
+							        aclname="javamodules"
+							        description="docu_ant object type tbo interface jar"
+							        jar="../deploy/docu_ant/docu_ant-interface.zip"
+							        jartype="interface"
+							        objectname="docu_ant-interface"
+							        ownername="dm_dbo"
+							        reaplysettings="true"
+							        repositories="ts"
+							        verbose="true" />
 							<!-- Add an implementation jar to the TBO. -->
-							<bofjar acldomain="dm_dbo" aclname="javamodules"
-								description="docu_ant object type tbo implementation jar" jar="../deploy/docu_ant/docu_ant-implementation.zip"
-								jartype="implementation" objectname="docu_ant-implementation"
-								ownername="dm_dbo" reaplysettings="true" repositories="ts"
-								verbose="true" />
+							<bofjar acldomain="dm_dbo"
+							        aclname="javamodules"
+							        description="docu_ant object type tbo implementation jar"
+							        jar="../deploy/docu_ant/docu_ant-implementation.zip"
+							        jartype="implementation"
+							        objectname="docu_ant-implementation"
+							        ownername="dm_dbo"
+							        reaplysettings="true"
+							        repositories="ts"
+							        verbose="true" />
 						</tbo>
 					</objecttype>
 				</objecttype>
 			</objecttype>
 			<!-- Create a group that can administer the created value assistance structure. -->
-			<docugroup
-				description="Group whose members can administer value assistance values."
-				groupaddress="christopher@sardion.fi" groupclass="group" groupname="valass_admins"
-				groupsnames="admingroup" ownername="dm_dbo" reaplysettings="true"
-				repositories="ts" type="dm_group" usersnames="${user.name}" verbose="true" />
+			<docugroup description="Group whose members can administer value assistance values."
+			           groupaddress="christopher@sardion.fi"
+			           groupclass="group"
+			           groupname="valass_admins"
+			           groupsnames="admingroup"
+			           ownername="dm_dbo"
+			           reaplysettings="true"
+			           repositories="ts"
+			           type="dm_group"
+			           usersnames="${user.name}"
+			           verbose="true" />
 			<!-- Create an ACL to apply to the value assistance structure. -->
-			<acl aclclass="3" aclname="valass"
-				description="ACL object applied to the value assistance structure and objects."
-				ownername="dm_dbo" reaplysettings="true" repositories="ts" verbose="true">
-				<accessor applicationpermit="" extendedpermit="" name="dm_world"
-					permit="2" permittype="0" />
-				<accessor applicationpermit="" extendedpermit="" name="dm_owner"
-					permit="7" permittype="0" />
-				<accessor applicationpermit="" extendedpermit=""
-					name="valass_admins" permit="7" permittype="0" />
+			<acl aclclass="3"
+			     aclname="valass"
+			     description="ACL object applied to the value assistance structure and objects."
+			     ownername="dm_dbo"
+			     reaplysettings="true"
+			     repositories="ts"
+			     verbose="true">
+				<accessor applicationpermit="" extendedpermit="" name="dm_world" permit="2" permittype="0" />
+				<accessor applicationpermit="" extendedpermit="" name="dm_owner" permit="7" permittype="0" />
+				<accessor applicationpermit="" extendedpermit="" name="valass_admins" permit="7" permittype="0" />
 			</acl>
 			<!-- Create an ACL to apply to application configuration objects. -->
-			<acl aclclass="3" aclname="system_config"
-				description="ACL object applied to the configuration file."
-				ownername="dm_dbo" reaplysettings="true" repositories="ts" verbose="true">
-				<accessor applicationpermit="" extendedpermit="" name="dm_world"
-					permit="2" permittype="0" />
-				<accessor applicationpermit="" extendedpermit="" name="dm_owner"
-					permit="7" permittype="0" />
+			<acl aclclass="3"
+			     aclname="system_config"
+			     description="ACL object applied to the configuration file."
+			     ownername="dm_dbo"
+			     reaplysettings="true"
+			     repositories="ts"
+			     verbose="true">
+				<accessor applicationpermit="" extendedpermit="" name="dm_world" permit="2" permittype="0" />
+				<accessor applicationpermit="" extendedpermit="" name="dm_owner" permit="7" permittype="0" />
 			</acl>
 			<!-- Load the folder structure from root down. The tags work so that they 
 				fetch an existing object from the repository if one can be found instead 
 				of trying to forcefuly create one. -->
-			<folder description="System cabinet." objectname="System"
-				repositories="ts">
+			<folder description="System cabinet." objectname="System" repositories="ts">
 				<!-- Value assistance folder under the System cabinet. -->
-				<folder acldomain="dm_dbo" aclname="valass"
-					description="Folder containing attribute value assistance values."
-					objectname="ValAss" ownername="dm_dbo" reaplysettings="true"
-					repositories="ts" type="dm_folder" verbose="true">
+				<folder acldomain="dm_dbo"
+				        aclname="valass"
+				        description="Folder containing attribute value assistance values."
+				        objectname="ValAss"
+				        ownername="dm_dbo"
+				        reaplysettings="true"
+				        repositories="ts"
+				        type="dm_folder"
+				        verbose="true">
 					<!-- Value assitance folder for Status. The contents of this folder 
 						is returned as the value assistance for docu_ant.ant_status attribute with 
 						the following DQL statement: select object_name from valass_folder_ant where 
 						folder('/System/ValAss/Status') order by 1 -->
-					<folder acldomain="dm_dbo" aclname="valass"
-						description="Folder containing value assistance values for the attribute docu_ant.ant_status."
-						objectname="Status" ownername="dm_dbo" reaplysettings="true"
-						repositories="ts" type="dm_folder" verbose="true">
+					<folder acldomain="dm_dbo"
+					        aclname="valass"
+					        description="Folder containing value assistance values for the attribute docu_ant.ant_status."
+					        objectname="Status"
+					        ownername="dm_dbo"
+					        reaplysettings="true"
+					        repositories="ts"
+					        type="dm_folder"
+					        verbose="true">
 						<!-- Create the value assistance values as valass_folder_ant objects. -->
-						<folder acldomain="dm_dbo" aclname="valass"
-							description="Value for docu_ant.ant_status." objectname="WIP"
-							ownername="dm_dbo" reaplysettings="true" repositories="ts"
-							type="valass_folder_ant" verbose="true" />
-						<folder acldomain="dm_dbo" aclname="valass"
-							description="Value for docu_ant.ant_status." objectname="Approved"
-							ownername="dm_dbo" reaplysettings="true" repositories="ts"
-							type="valass_folder_ant" verbose="true" />
-						<folder acldomain="dm_dbo" aclname="valass"
-							description="Value for docu_ant.ant_status." objectname="Obsolete"
-							ownername="dm_dbo" reaplysettings="true" repositories="ts"
-							type="valass_folder_ant" verbose="true" />
+						<folder acldomain="dm_dbo"
+						        aclname="valass"
+						        description="Value for docu_ant.ant_status."
+						        objectname="WIP"
+						        ownername="dm_dbo"
+						        reaplysettings="true"
+						        repositories="ts"
+						        type="valass_folder_ant"
+						        verbose="true" />
+						<folder acldomain="dm_dbo"
+						        aclname="valass"
+						        description="Value for docu_ant.ant_status."
+						        objectname="Approved"
+						        ownername="dm_dbo"
+						        reaplysettings="true"
+						        repositories="ts"
+						        type="valass_folder_ant"
+						        verbose="true" />
+						<folder acldomain="dm_dbo"
+						        aclname="valass"
+						        description="Value for docu_ant.ant_status."
+						        objectname="Obsolete"
+						        ownername="dm_dbo"
+						        reaplysettings="true"
+						        repositories="ts"
+						        type="valass_folder_ant"
+						        verbose="true" />
 					</folder>
 				</folder>
 				<!-- Create a folder for configuration objects. -->
-				<folder acldomain="dm_dbo" aclname="system_config"
-					description="Folder containing configuration files." objectname="Config"
-					ownername="dm_dbo" reaplysettings="true" repositories="ts" type="dm_folder"
-					verbose="true">
+				<folder acldomain="dm_dbo"
+				        aclname="system_config"
+				        description="Folder containing configuration files."
+				        objectname="Config"
+				        ownername="dm_dbo"
+				        reaplysettings="true"
+				        repositories="ts"
+				        type="dm_folder"
+				        verbose="true">
 					<!-- Create the configuration xml file with the content coming from 
 						this project. NOTE: When investigating the log - the provided log or one 
 						created from your own test run - file you will notice that the TBO has already 
 						kicked in creating value for docu_ant.ant_id. -->
-					<document acldomain="dm_dbo" aclname="system_config"
-						contenttype="xml" content="../config/config.xml" objectname="config.xml"
-						ownername="dm_dbo" type="docu_ant" verbose="true" reaplysettings="true">
+					<document acldomain="dm_dbo"
+					          aclname="system_config"
+					          contenttype="xml"
+					          content="../config/config.xml"
+					          objectname="config.xml"
+					          ownername="dm_dbo"
+					          type="docu_ant"
+					          verbose="true"
+					          reaplysettings="true">
 						<!-- Populate keywords values. These values will later be populated 
 							into the created materialized view. -->
-						<attribute name="keywords" repeating="true"
-							value="first,second,third" />
+						<attribute name="keywords" repeating="true" value="first,second,third" />
 					</document>
 					<!-- Using the dm_sysobject tag instance of any object type beneath 
 						dm_sysobject can be created. -->
 					<sysobject description="Just creating any type beneath dm_sysobject"
-						objectname="ant_example" ownername="dm_dbo" reaplysettings="true"
-						type="dm_sysobject" verbose="true">
+					           objectname="ant_example"
+					           ownername="dm_dbo"
+					           reaplysettings="true"
+					           type="dm_sysobject"
+					           verbose="true">
 						<!-- The attribute tag can be used to populate any attribute on an 
 							object. Typically the more commonly used attributes have an setter directly 
 							on the task, but using the nested attribute tag works just as well. -->
-						<attribute name="title" value="Populate any attribute."
-							repeating="false" />
-						<attribute name="keywords" value="first,second,thrird"
-							repeating="true" />
+						<attribute name="title" value="Populate any attribute." repeating="false" />
+						<attribute name="keywords" value="first,second,thrird" repeating="true" />
 					</sysobject>
 				</folder>
 			</folder>
 			<!-- Create a simple module as the functional part of a method. NOTE: 
 				I have noticed that sometimes these don't get picked up by JMS without a 
 				boot. -->
-			<simplemodule acldomain="dm_dbo" aclname="javamodules"
-				contactinfo="info@sardion.fi" description="A dummy server method."
-				mindfcversion="6.5" moduledescription="A dummy server method."
-				modulename="users_docs_ant" ownername="dm_dbo"
-				primaryclass="fi.sardion.dctm.example.method.AntDummy"
-				reaplysettings="true" repositories="ts" requiredmoduleinterfaces=""
-				requiredmodulenames="" verbose="true" version="6.5">
+			<simplemodule acldomain="dm_dbo"
+			              aclname="javamodules"
+			              contactinfo="info@sardion.fi"
+			              description="A dummy server method."
+			              mindfcversion="6.5"
+			              moduledescription="A dummy server method."
+			              modulename="users_docs_ant"
+			              ownername="dm_dbo"
+			              primaryclass="fi.sardion.dctm.example.method.AntDummy"
+			              reaplysettings="true"
+			              repositories="ts"
+			              requiredmoduleinterfaces=""
+			              requiredmodulenames=""
+			              verbose="true"
+			              version="6.5">
 				<!-- Add an interface jar to the method. -->
-				<bofjar acldomain="dm_dbo" aclname="javamodules"
-					description="users_docs_ant method interface jar" jar="../deploy/users_docs_ant/users_docs_ant-interface.zip"
-					jartype="interface" objectname="users_docs_ant-interface"
-					ownername="dm_dbo" reaplysettings="true" repositories="ts" verbose="true" />
+				<bofjar acldomain="dm_dbo"
+				        aclname="javamodules"
+				        description="users_docs_ant method interface jar"
+				        jar="../deploy/users_docs_ant/users_docs_ant-interface.zip"
+				        jartype="interface"
+				        objectname="users_docs_ant-interface"
+				        ownername="dm_dbo"
+				        reaplysettings="true"
+				        repositories="ts"
+				        verbose="true" />
 				<!-- Add an implementation jar to the method. -->
-				<bofjar acldomain="dm_dbo" aclname="javamodules"
-					description="users_docs_ant method implementation jar"
-					jar="../deploy/users_docs_ant/users_docs_ant-implementation.zip"
-					jartype="implementation" objectname="users_docs_ant-implementation"
-					ownername="dm_dbo" reaplysettings="true" repositories="ts" verbose="true" />
+				<bofjar acldomain="dm_dbo"
+				        aclname="javamodules"
+				        description="users_docs_ant method implementation jar"
+				        jar="../deploy/users_docs_ant/users_docs_ant-implementation.zip"
+				        jartype="implementation"
+				        objectname="users_docs_ant-implementation"
+				        ownername="dm_dbo"
+				        reaplysettings="true"
+				        repositories="ts"
+				        verbose="true" />
 				<!-- Create a server method for the module. -->
-				<servermethod acldomain="dm_dbo" aclname="javamodules"
-					description="A dummy server method." isrestartable="false"
-					launchasync="false" launchdirect="true" methodname="users_docs_ant"
-					ownername="dm_dbo" reaplysettings="true" repositories="ts"
-					runasserver="true" timeoutdefault="155" timeoutmax="301"
-					timeoutmin="84" tracelaunch="true" usemethodcontent="false"
-					usemethodserver="true" verbose="true">
+				<servermethod acldomain="dm_dbo"
+				              aclname="javamodules"
+				              description="A dummy server method."
+				              isrestartable="false"
+				              launchasync="false"
+				              launchdirect="true"
+				              methodname="users_docs_ant"
+				              ownername="dm_dbo"
+				              reaplysettings="true"
+				              repositories="ts"
+				              runasserver="true"
+				              timeoutdefault="155"
+				              timeoutmax="301"
+				              timeoutmin="84"
+				              tracelaunch="true"
+				              usemethodcontent="false"
+				              usemethodserver="true"
+				              verbose="true">
 					<!-- Create a job for the server method. -->
-					<job category="Ant documentation" inactivateafterfailure="false"
-						jobname="users_docs_ant" passstandardarguments="true"
-						reaplysettings="true" runinterval="2" runmode="week" verbose="true">
-						<attribute repeating="true" name="method_arguments"
-							value="-foo bar,-bar foo" />
+					<job category="Ant documentation"
+					     inactivateafterfailure="false"
+					     jobname="users_docs_ant"
+					     passstandardarguments="true"
+					     reaplysettings="true"
+					     runinterval="2"
+					     runmode="week"
+					     verbose="true">
+						<attribute repeating="true" name="method_arguments" value="-foo bar,-bar foo" />
 					</job>
 				</servermethod>
 			</simplemodule>
 			<!-- Create an alias set. -->
-			<aliasset aliassetname="doc_alias_ant" verbose="true"
-				reaplysettings="true" description="Aliases can be created also.">
-				<alias name="foo" value="bar" category="0" usercategory="1"
-					description="Jep." />
-				<alias name="bar" value="foo" category="0" usercategory="1"
-					description="Jep." />
+			<aliasset aliassetname="doc_alias_ant" verbose="true" reaplysettings="true" description="Aliases can be created also.">
+				<alias name="foo" value="bar" category="0" usercategory="1" description="Jep." />
+				<alias name="bar" value="foo" category="0" usercategory="1" description="Jep." />
 			</aliasset>
 			<!-- Create a relation type. Nothin utilizes this in the example. -->
 			<relationtype relationname="doc_ant_relation"
-				securitytype="CHILD" parenttype="dm_user" childtype="docu_ant"
-				description="Relation to the previous owner." directionkind="0"
-				integritykind="0" permanentlink="1" copychild="0" controllingkind="ANT"
-				verbose="true" />
+			              securitytype="CHILD"
+			              parenttype="dm_user"
+			              childtype="docu_ant"
+			              description="Relation to the previous owner."
+			              directionkind="0"
+			              integritykind="0"
+			              permanentlink="1"
+			              copychild="0"
+			              controllingkind="ANT"
+			              verbose="true" />
 			<!-- Create a materialized view log on dm_sysobject_s. NOTE: Oracle spesific. -->
-			<api
-				api="execsql,c,create materialized view log on dm_sysobject_s with rowid, sequence(r_object_type,r_modify_date) including new values"
-				description="The dm_sysobject_s materialized view log." failfast="false" />
+			<api api="execsql,c,create materialized view log on dm_sysobject_s with rowid, sequence(r_object_type,r_modify_date) including new values"
+			     description="The dm_sysobject_s materialized view log."
+			     failfast="false" />
 			<!-- Create a materialized view log on dm_sysobject_r. NOTE: Oracle spesific. -->
-			<api
-				api="execsql,c,create materialized view log on dm_sysobject_r with rowid, sequence(keywords) including new values"
-				description="The dm_sysobject_r materialized view log." failfast="false" />
+			<api api="execsql,c,create materialized view log on dm_sysobject_r with rowid, sequence(keywords) including new values"
+			     description="The dm_sysobject_r materialized view log."
+			     failfast="false" />
 			<!-- Create the materialized view. NOTE: Oracle spesific and you must 
 				have job_queue_processes > 0 for this view to refresh. -->
-			<api
-				api="execsql,c,create materialized view used_keywords build immediate refresh complete start with sysdate + 1/200 next sysdate + 1/150 as select dsr.keywords as keyword, count(dsr.keywords) as keyword_count, max(dss.r_modify_date) as modified from dm_sysobject_s dss, dm_sysobject_r dsr where dss.r_object_id = dsr.r_object_id and dss.r_object_type = 'docu_ant' and dss.r_modify_date >= sysdate - 300 and dsr.keywords != ' ' group by dsr.keywords order by 2 desc, 3 desc"
-				description="The docu_ant.keywords value assistance materialized view."
-				failfast="false" />
+			<api api="execsql,c,create materialized view used_keywords build immediate refresh complete start with sysdate + 1/200 next sysdate + 1/150 as select dsr.keywords as keyword, count(dsr.keywords) as keyword_count, max(dss.r_modify_date) as modified from dm_sysobject_s dss, dm_sysobject_r dsr where dss.r_object_id = dsr.r_object_id and dss.r_object_type = 'docu_ant' and dss.r_modify_date >= sysdate - 300 and dsr.keywords != ' ' group by dsr.keywords order by 2 desc, 3 desc"
+			     description="The docu_ant.keywords value assistance materialized view."
+			     failfast="false" />
 			<!-- Create the registered table onto the materialized view. -->
 			<dql description="Register the created materialized view."
-				dql="register table dm_dbo.used_keywords (keyword string(48), keyword_count integer, modified time)"
-				failfast="false" />
+			     dql="register table dm_dbo.used_keywords (keyword string(48), keyword_count integer, modified time)"
+			     failfast="false" />
 			<!-- Give everyone read access. -->
 			<dql description="Grant privileges to the created registered table."
-				dql="update dm_registered objects set owner_table_permit = 1 set group_table_permit = 1 set world_table_permit = 1 where object_name = 'used_keywords'"
-				failfast="false" />
+			     dql="update dm_registered objects set owner_table_permit = 1 set group_table_permit = 1 set world_table_permit = 1 where object_name = 'used_keywords'"
+			     failfast="false" />
 		</session>
 	</target>
 </project>
